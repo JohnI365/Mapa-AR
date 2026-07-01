@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Reinducción Corporativa AR · Ingeniería 365</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+
+  <main class="pantalla-bienvenida">
+    <div class="logo-empresa">Ingeniería 365 S.A.S.</div>
+
+    <section class="tarjeta-bienvenida">
+      <h1>¡Hola, <span id="nombre-colaborador" class="nombre">colaborador(a)</span>!</h1>
+      <p id="subtitulo-bienvenida">Preparando tu experiencia de reinducción...</p>
+
+      <button id="boton-entrar" class="boton-primario">
+        Entrar a la experiencia AR
+      </button>
+
+      <div class="nota-dispositivo">
+        Funciona directo en tu navegador móvil · sin instalar nada
+      </div>
+    </section>
+  </main>
+
+  <!-- canvas-confetti vía CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

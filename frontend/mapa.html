@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <title>Mapa Virtual AR · Reinducción Ingeniería 365</title>
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- A-Frame: motor 3D/WebXR declarativo -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <!-- AR.js: tracking de marcador/QR y cámara para AR en navegador -->
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+</head>
+<body>
+  <!-- Fundido entre escenas -->
+  <div id="fundido-pantalla" class="fundido-pantalla"></div>
+
+  <!-- iOS requiere un tap explícito para conceder acceso al giroscopio -->
+  <div id="overlay-permiso-giroscopio" class="overlay-permiso-giroscopio">
+    <div>
+      <p>Esta experiencia usa el giroscopio de tu celular para que mires<br />alrededor del mapa virtual.</p>
+      <button id="boton-activar-giroscopio" class="boton-primario">Activar y comenzar</button>
+    </div>
+  </div>
+
+  <div class="overlay-mapa">
+    <span class="chip" id="chip-escena">Cargando...</span>
+    <span class="chip" id="chip-colaborador"></span>
+  </div>
+
+  <!--
+    look-controls con magicWindowTrackingEnabled habilita la navegación
+    por giroscopio (mobile) y por arrastre con mouse (desktop).
+    El a-cursor con fuse=true convierte la mirada en un "click": el
+    usuario mira un hotspot ~1s y eso dispara la navegación, sin
+    necesidad de tocar la pantalla.
+  -->
+  <a-scene>
+    <a-assets>
+      <!-- Aquí irán los modelos GLB (águila, mascota corporativa, etc.) -->
+    </a-assets>
+
+    <a-sky id="panorama-actual" color="#121826"></a-sky>
+
+    <a-entity id="contenedor-hotspots"></a-entity>
+
+    <a-entity id="rig" position="0 1.6 0">
+      <a-camera look-controls="magicWindowTrackingEnabled: true" wasd-controls-enabled="false">
+        <a-cursor
+          fuse="true"
+          fuse-timeout="1000"
+          raycaster="objects: .hotspot"
+          geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.035"
+          material="color: white; shader: flat">
+        </a-cursor>
+      </a-camera>
+    </a-entity>
+  </a-scene>
+
+  <script type="module">
+    import { iniciarNavegacion } from "./js/navigation.js";
+    import { solicitarPermisoGiroscopio } from "./js/gyro-permission.js";
+
+    const params = new URLSearchParams(window.location.search);
+    document.getElementById("chip-colaborador").textContent = params.get("token") || "general";
+
+    solicitarPermisoGiroscopio().then(() => {
+      iniciarNavegacion();
+    });
+  </script>
+</body>
+</html>
