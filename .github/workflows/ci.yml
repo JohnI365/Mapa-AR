@@ -1,0 +1,43 @@
+name: CI - build y health check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build imagen Docker
+        run: docker build -t reinduccion-ar:ci .
+
+      - name: Levantar contenedor
+        run: docker run -d --name reinduccion-ar -p 8080:8080 reinduccion-ar:ci
+
+      - name: Esperar a que el servicio responda
+        run: |
+          for i in $(seq 1 20); do
+            if curl -sf http://localhost:8080/health; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "El servicio no respondio a tiempo"
+          exit 1
+
+      - name: Verificar frontend (index y mapa)
+        run: |
+          curl -sf -o /dev/null http://localhost:8080/
+          curl -sf -o /dev/null http://localhost:8080/mapa.html
+
+      - name: Logs del contenedor (siempre, util para debug)
+        if: always()
+        run: docker logs reinduccion-ar
+
+      - name: Detener contenedor
+        if: always()
+        run: docker rm -f reinduccion-ar
