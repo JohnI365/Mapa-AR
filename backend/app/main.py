@@ -17,7 +17,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from app.api import colaboradores
+from .api import colaboradores
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent  # raíz del repo
 FRONTEND_DIR = BASE_DIR / "frontend"

@@ -7,8 +7,8 @@ giroscopio.
 
 ## Stack
 
-- **Frontend**: HTML/CSS/JS estático + [A-Frame](https://aframe.io) +
-  [AR.js](https://ar-js-org.github.io/AR.js-Docs/) + `canvas-confetti`
+- **Frontend**: HTML/CSS/JS estático + [A-Frame](https://aframe.io) (motor
+  WebXR para el tour 360°/3D con giroscopio) + `canvas-confetti`
   (todo vía CDN, sin paso de build).
 - **Backend**: FastAPI, sirve la API y el frontend estático en un solo
   servicio.
